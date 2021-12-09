@@ -15,7 +15,11 @@ bot = telegram.Bot(token=config.token)
 @bp.route('/notify', methods=['POST'])
 async def notify_all():
     db = get_db()
-    chats = db.execute('SELECT * FROM user')
+
+    cur = g.db.cursor()
+    cur.execute("SELECT * FROM user")
+    chats = cur.fetchall()
+    cur.close()
     for chat in chats:
         print(chat['chat_id'])
         try:
@@ -28,7 +32,7 @@ async def notify_all():
         except:
             return "Bad request", 400
         await asyncio.sleep(0.5)
-
+    db.close_db()
     return "ok"
 
 @bp.route('/{}'.format(config.token), methods=['POST'])
@@ -59,7 +63,7 @@ async def respond():
                 (chat_id, username))
 
     result = cur.fetchone()
-
+    cur.close()
     if not result:
         db.execute("INSERT INTO user (username, chat_id) VALUES (?, ?)", (username, chat_id),)
         db.commit()
@@ -96,7 +100,7 @@ async def respond():
         """
         await asyncio.sleep(7)
         bot.sendMessage(chat_id=chat_id, text=traning_description)
-    
+    db.close_db()
     return 'ok'
 
 @bp.route('/set_webhook', methods=['GET', 'POST'])
