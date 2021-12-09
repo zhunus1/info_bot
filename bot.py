@@ -28,7 +28,10 @@ async def notify_all():
             key = request.headers.get('x-api-key')
             if key == 'Behappy7+':
                 notify_text = request.form.get('text')
-                bot.sendMessage(chat_id=chat['chat_id'], text=notify_text)
+                try:
+                    bot.sendMessage(chat_id=chat['chat_id'], text=notify_text)
+                except:
+                    print('Bot was blocked by the user')
             else:
                 return "Bad request", 400
         except:
@@ -110,7 +113,7 @@ async def respond():
 
 @bp.route('/set_webhook', methods=['GET', 'POST'])
 def set_webhook():
-   s = bot.setWebhook('{URL}{HOOK}'.format(URL="https://c58b-2-132-74-31.ngrok.io/bot/", HOOK=config.token), allowed_updates=[])
+   s = bot.setWebhook('{URL}{HOOK}'.format(URL="https://76e4-2-72-206-18.ngrok.io/bot/", HOOK=config.token), allowed_updates=[])
    if s:
        return "webhook setup ok"
    else:
