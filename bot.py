@@ -7,6 +7,8 @@ from flask import (
 )
 
 from db import get_db
+from db import close_db
+
 
 bp = Blueprint('bot', __name__, url_prefix='/bot')
 bot = telegram.Bot(token=config.token)
@@ -32,7 +34,7 @@ async def notify_all():
         except:
             return "Bad request", 400
         await asyncio.sleep(0.5)
-    db.close_db()
+    close_db()
     return "ok"
 
 @bp.route('/{}'.format(config.token), methods=['POST'])
@@ -100,7 +102,7 @@ async def respond():
         """
         await asyncio.sleep(7)
         bot.sendMessage(chat_id=chat_id, text=traning_description)
-    db.close_db()
+    close_db()
     return 'ok'
 
 @bp.route('/set_webhook', methods=['GET', 'POST'])
