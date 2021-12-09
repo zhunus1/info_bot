@@ -17,18 +17,17 @@ async def notify_all():
     db = get_db()
     chats = db.execute('SELECT * FROM user')
     for chat in chats:
-        print(chat)
+        print(chat['chat_id'])
         try:
             key = request.headers.get('x-api-key')
             if key == 'Behappy7+':
                 notify_text = request.form.get('text')
                 bot.sendMessage(chat_id=chat['chat_id'], text=notify_text)
-                await asyncio.sleep(1)
-                return 'ok'
             else:
                 return "Bad request", 400
         except:
             return "Bad request", 400
+        await asyncio.sleep(0.5)
 
     return "ok"
 
