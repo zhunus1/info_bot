@@ -101,7 +101,7 @@ async def respond():
 
 @bp.route('/set_webhook', methods=['GET', 'POST'])
 def set_webhook():
-   s = bot.setWebhook('{URL}{HOOK}'.format(URL="https://aa71-2-72-171-163.ngrok.io/bot/", HOOK=config.token), allowed_updates=[])
+   s = bot.setWebhook('{URL}{HOOK}'.format(URL="https://bot.info-platform.com/bot/", HOOK=config.token), allowed_updates=[])
    if s:
        return "webhook setup ok"
    else:
